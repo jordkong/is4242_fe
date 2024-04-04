@@ -1,7 +1,10 @@
 import logo from './logo.svg';
 import './App.css';
+import React, {useState, useEffect} from 'react';
+import { Row, Col, Form, Input, Button, message, Upload } from 'antd';
+import axios from 'axios'
 
-function App() {
+const App = (props) => {
   return (
     <div className="App">
       <header className="App-header">
