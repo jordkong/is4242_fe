@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import React, {useState, useEffect} from 'react';
-import { Row, Col, Form, Input, Button, message, Upload } from 'antd';
+import { Layout, Row, Col, Form, Input, Button, message, Upload } from 'antd';
 import axios from 'axios'
 
 const App = (props) => {
