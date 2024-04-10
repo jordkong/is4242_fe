@@ -3,6 +3,9 @@ import './App.css';
 import React, {useState, useEffect} from 'react';
 import { Layout, Row, Col, Form, Input, Button, message, Upload } from 'antd';
 import axios from 'axios'
+import { UploadOutlined } from '@ant-design/icons';
+import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
+
 
 const App = (props) => {
   const [flower, setFlower] = useState();
@@ -32,8 +35,8 @@ const App = (props) => {
   }
 
   // Handle whatever file upload processing necessary here, and pass to uploadFile
-  const handleSubmit = () => {
-
+  const handleSubmit = (file) => {
+    uploadFile(file);
   }
 
   // Axios API call to flask
@@ -52,22 +55,29 @@ const App = (props) => {
 
   // UI Components rendered in the page
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <div className="app-container">
+    <header className="app-header">
+      <div className="header-content">
+        <h1 className="app-title">
+          <span>Flower Detector</span>
+          <LocalFloristIcon fontSize="large" style={{ color: 'white', verticalAlign: 'middle' }}/>
+        </h1>
+      </div>
+    </header>
+    <main className="app-main">
+        <div className="main-content">
+          <p className="app-description">
+            Upload a picture to identify the type of flower
+          </p>
+          <Upload onChange={(info) => handleSubmit(info.file)} className="upload-container">
+            <Button icon={<UploadOutlined />} className="upload-button">Upload Image</Button>
+          </Upload>
+        </div>
+      </main>
+    <footer className="app-footer">
+      <p>IS4242 Group 2</p>
+    </footer>
+  </div>
   );
 }
 
