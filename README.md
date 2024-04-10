@@ -1,3 +1,19 @@
+# Getting Started with the Model Backend
+
+## Python library installation
+
+``` pip install -r requirements.txt ```
+
+## Running the server
+
+``` python app.py ```
+
+## Running the server via Docker container
+
+``` docker build -t model-backend . ```
+
+``` docker run -p 5000:5000 model-backend ```
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
