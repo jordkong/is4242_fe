@@ -1,6 +1,7 @@
 from typing import List
 
-from fastapi import FastAPI, Body, HTTPException
+from fastapi import FastAPI, Body, HTTPException, File, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 import sklearn
 import pickle
 import re
@@ -9,9 +10,18 @@ import re
 
 app = FastAPI()
 
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Load the model
-model = pickle.load(open("", "rb"))
+# model = pickle.load(open("", "rb"))
 
 
 def process_image(text: str) -> str:
@@ -28,8 +38,8 @@ def process_image(text: str) -> str:
 
     return None
 
-@app.post("/get_label/")
-async def get_label(inputs):
+@app.post("/get_label")
+async def get_label(file: bytes = File(...)):
     """
     Endpoint to get labels for input images. Images would be processed first
     The processed image would be passed to the model to get predictions.
@@ -41,12 +51,11 @@ async def get_label(inputs):
     dict: TBD
     """
     try:
-
         
-        processedImage = None
-        predictions = model.predict(processedImage)
+        # processedImage = None
+        # predictions = model.predict(processedImage)
         
-        return {"predictions": predictions.tolist()}
-    
+        # return {"predictions": predictions.tolist()}
+        return {"predictions": "success"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

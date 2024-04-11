@@ -1,11 +1,13 @@
 import logo from './logo.svg';
 import './App.css';
 import React, {useState, useEffect} from 'react';
-import { Layout, Row, Col, Form, Input, Button, message, Upload } from 'antd';
+import { Layout, Row, Col, Form, Input, Button, message, Upload, Avatar, Card } from 'antd';
 import axios from 'axios'
 import { UploadOutlined } from '@ant-design/icons';
 import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
 
+const uvicorn_url = 'http://127.0.0.1:8000'
+const { Meta } = Card;
 
 const App = (props) => {
   const [flower, setFlower] = useState();
@@ -34,24 +36,27 @@ const App = (props) => {
     setFlowerIdentifiedFailed(false);
   }
 
-  // Handle whatever file upload processing necessary here, and pass to uploadFile
-  const handleSubmit = (file) => {
-    uploadFile(file);
-  }
-
-  // Axios API call to flask
-  const uploadFile = (data) => {
-    const url = ``;
-    const body = data;
-    
-    axios.post(url, body, {headers: {'Content-Type': 'multipart/form-data'}})
-      .then(response => {
-        handleIdentifiedSuccess(response.data);
-      })
-      .catch(err => {
+  const upload_props = {
+    name: 'file',
+    multiple: false,
+    action: 'http://127.0.0.1:8000/get_label',
+    onChange(info) {
+      resetIdentifyFlower()
+      const { status } = info.file;
+      if (status !== 'uploading') {
+        // May consider adding a spinner trigger
+        console.log(info.file, info.fileList);
+      }
+      if (status === 'done') {
+        handleIdentifiedSuccess(info.file.response);
+      } else if (status === 'error') {
         handleIdentifiedFailed();
-      })
-  }
+      }
+    },
+    onDrop(e) {
+      console.log('Dropped files', e.dataTransfer.files);
+    },
+  };
 
   // UI Components rendered in the page
   return (
@@ -69,9 +74,28 @@ const App = (props) => {
           <p className="app-description">
             Upload a picture to identify the type of flower
           </p>
-          <Upload onChange={(info) => handleSubmit(info.file)} className="upload-container">
+          <Upload {...upload_props} className="upload-container">
             <Button icon={<UploadOutlined />} className="upload-button">Upload Image</Button>
           </Upload>
+          {flowerIdentifiedSuccess &&
+            <Card
+              style={{
+                width: 300,
+              }}
+              cover={
+                <img
+                  alt="example"
+                  src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                />
+              }
+              className="upload-container"
+            >
+              <Meta
+                title={flower['predictions']}
+                description="This is the description"
+              />
+            </Card>
+          }
         </div>
       </main>
     <footer className="app-footer">
