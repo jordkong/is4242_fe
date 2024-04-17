@@ -23,3 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 *.pyc
 *.pkl
+*.pk1
+*.h5

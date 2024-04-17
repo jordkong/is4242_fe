@@ -1,10 +1,12 @@
 from typing import List
-
+from keras.models import load_model
 from fastapi import FastAPI, Body, HTTPException, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-import sklearn
-import pickle
-import re
+import uvicorn
+from keras.preprocessing import image
+from io import BytesIO
+import numpy as np
+import pickle 
 
 
 
@@ -21,8 +23,11 @@ app.add_middleware(
 )
 
 # Load the model
-model = pickle.load(open("classifier.pkl", "rb"))
+model = load_model("classifier.h5")
 
+class_labels = None
+with open("ResultsMap.pk1", 'rb') as file:
+        class_labels = pickle.load(file)
 
 def process_image(text: str) -> str:
 
@@ -52,9 +57,28 @@ async def get_label(file: bytes = File(...)):
     """
     try:
         
-        processedImage = file
-        predictions = model.predict(processedImage)
+        img = image.load_img(BytesIO(file), target_size=(128, 128))  # Ensure this matches your model's expected input dimensions
         
-        return {"predictions": predictions.tolist()}
+    
+        img_array = image.img_to_array(img)
+        
+       
+        img_array /= 255.0  
+        
+
+        img_array = np.expand_dims(img_array, axis=0)
+
+        predictions = model.predict(img_array)
+        
+        
+        predicted_class = np.argmax(predictions, axis=1)
+        class_index = int(predicted_class[0])
+        class_name = class_labels[class_index]
+        return {"predictions": predictions.tolist(), "class": class_name}
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="localhost", port=8000)
