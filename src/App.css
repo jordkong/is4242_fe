@@ -73,3 +73,11 @@
 .app-link:hover {
   text-decoration: underline;
 }
+
+.preview-card {
+  margin-top: 20px;
+  display: block;
+  width: 600px !important;
+  justify-content: center;
+  align-items: center;
+}
