@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import React, {useState, useEffect} from 'react';
-import { Layout, Row, Col, Form, Input, Button, message, Upload, Avatar, Card } from 'antd';
+import { Layout, Row, Col, Form, Input, Button, message, Upload, Avatar, Card, Image } from 'antd';
 import axios from 'axios'
 import { UploadOutlined } from '@ant-design/icons';
 import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
@@ -13,6 +13,16 @@ const App = (props) => {
   const [flower, setFlower] = useState();
   const [flowerIdentifiedSuccess, setFlowerIdentifiedSuccess] = useState(false);
   const [flowerIdentifiedFailed, setFlowerIdentifiedFailed] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState('');
+
+  const getBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
 
   // Handle state change on successful API call
   const handleIdentifiedSuccess = (flowerName) => {
@@ -26,8 +36,16 @@ const App = (props) => {
     setFlowerIdentifiedFailed(true);
   }
 
+  const handlePreview = async (file) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+    setPreviewImage(file.url || file.preview);
+    setPreviewOpen(true);
+  };
+
   // Crude method to force rerender of page components on api response
-  useEffect(() => {}, [flowerIdentifiedSuccess, flowerIdentifiedFailed])
+  // useEffect(() => {}, [flowerIdentifiedSuccess, flowerIdentifiedFailed])
 
   // Reset state when user tries to upload a new picture
   const resetIdentifyFlower = () => {
@@ -39,9 +57,12 @@ const App = (props) => {
   const upload_props = {
     name: 'file',
     multiple: false,
+    showUploadList: false,
     action: 'http://127.0.0.1:8000/get_label',
     onChange(info) {
       resetIdentifyFlower()
+      handlePreview(info.file)
+      console.log('info in Upload: ', info)
       const { status } = info.file;
       if (status !== 'uploading') {
         // May consider adding a spinner trigger
@@ -83,12 +104,11 @@ const App = (props) => {
                 width: 300,
               }}
               cover={
-                <img
-                  alt="example"
-                  src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                <Image
+                  src={previewImage}
                 />
               }
-              className="upload-container"
+              className="preview-card"
             >
               <Meta
                 title={flower['predictions']}
