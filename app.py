@@ -21,7 +21,7 @@ app.add_middleware(
 )
 
 # Load the model
-model = pickle.load(open("classifier.pkl", "rb"))
+# model = pickle.load(open("", "rb"))
 
 
 def process_image(text: str) -> str:
@@ -52,9 +52,10 @@ async def get_label(file: bytes = File(...)):
     """
     try:
         
-        processedImage = file
-        predictions = model.predict(processedImage)
+        # processedImage = None
+        # predictions = model.predict(processedImage)
         
-        return {"predictions": predictions.tolist()}
+        # return {"predictions": predictions.tolist()}
+        return {"predictions": "success"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
