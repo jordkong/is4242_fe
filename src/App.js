@@ -85,7 +85,7 @@ const App = (props) => {
     <header className="app-header">
       <div className="header-content">
         <h1 className="app-title">
-          <span>Flower Detector</span>
+          <span>FloralNet</span>
           <LocalFloristIcon fontSize="large" style={{ color: 'white', verticalAlign: 'middle' }}/>
         </h1>
       </div>
