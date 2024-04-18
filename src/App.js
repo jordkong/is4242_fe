@@ -111,8 +111,7 @@ const App = (props) => {
               className="preview-card"
             >
               <Meta
-                title={flower['predictions']}
-                description="This is the description"
+                title={flower['class']}
               />
             </Card>
           }
