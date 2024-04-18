@@ -12,7 +12,7 @@
 
 ``` docker build -t model-backend . ```
 
-``` docker run -p 5000:5000 model-backend ```
+``` docker run -p 8000:8000 model-backend ```
 
 # Getting Started with Create React App
 
