@@ -24,6 +24,7 @@ The accurate classification of images of flowers is essential to facilitate task
 
 - [React.js](https://reactjs.org/)
 - [Docker](https://www.docker.com/products/docker-desktop/)
+- [FastAPI](https://fastapi.tiangolo.com/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -44,6 +45,23 @@ The accurate classification of images of flowers is essential to facilitate task
 ``` docker build -t model-backend . ```
 
 ``` docker run -p 8000:8000 model-backend ```
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+<br />
+
+## Getting Started with the React Frontend
+
+### Install Dependencies
+
+``` npm install ```
+
+### Run React App
+
+``` npm start ```
+
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
