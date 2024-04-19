@@ -30,6 +30,10 @@ The accurate classification of images of flowers is essential to facilitate task
 
 <br />
 
+## Instructions to Run
+
+Recommended to run with Windows.
+
 ## Getting Started with the Model Backend
 
 ### Python library installation
